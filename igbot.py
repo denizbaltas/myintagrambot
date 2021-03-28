@@ -197,9 +197,9 @@ class Myapp(QtWidgets.QMainWindow):
                 if not self.cifttaraflitakip : 
 
                     self.takipedilenlerinisimleri[self.a].find_element_by_css_selector("div button").click()
-                    time.sleep(0.71)
+                    time.sleep(0.41)
                     self.browser.find_element_by_xpath('/html/body/div[6]/div/div/div/div[3]/button[1]').click()
-                    time.sleep(0.71)
+                    time.sleep(0.41)
                 self.islemyapiliyor = False
                 self.ui.label_4.setText("Successful")
         else :
@@ -216,9 +216,9 @@ class Myapp(QtWidgets.QMainWindow):
             self.browser.get("https://www.instagram.com/"+self.pagename+"/")
             time.sleep(3)
 
-            self.takipciler = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a').find_element_by_css_selector("span").text
+            self.takipciler = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a').find_element_by_css_selector("span").text
             self.takipciler = int(self.takipciler)
-            self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a').click()
+            self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a').click()
             time.sleep(2)
 
             action = webdriver.ActionChains(self.browser)
@@ -251,9 +251,9 @@ class Myapp(QtWidgets.QMainWindow):
             self.browser.get("https://www.instagram.com/"+self.pagename+"/")
             time.sleep(3)
 
-            self.takipciler = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a').find_element_by_css_selector("span").text
+            self.takipciler = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a').find_element_by_css_selector("span").text
             self.takipciler = int(self.takipciler)
-            self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a').click()
+            self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a').click()
             time.sleep(2)
 
             action = webdriver.ActionChains(self.browser)
@@ -283,36 +283,38 @@ class Myapp(QtWidgets.QMainWindow):
         self.password = self.ui.sifre_edit.text()
         self.username = self.ui.username_edit.text()
         self.girisyapildi = True
-       
 
-        self.useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 OPR/74.0.3911.203"
-        self.options = Options()
-        self.options.add_experimental_option("prefs", {"intl.accept_languages" : "tr"})
-        self.options.add_argument('--headless')
-        self.options.add_argument(f'user-agent={self.useragent}')
-        self.options.add_argument('--disable-gpu') 
-        self.browser = webdriver.Chrome(executable_path="C://Users/deniz/OneDrive/Desktop/python/chromedriver.exe", chrome_options=self.options)
+        if len(self.password) < 6 : 
+            self.ui.label_5.setText("Your password very short")
 
-        self.url = "https://www.instagram.com"
-        self.browser.get(self.url)
-        time.sleep(2)
+        else:        
 
-        self.browser.find_element_by_xpath('//*[@id="loginForm"]/div[1]/div[1]/div/label/input').send_keys(self.username)
-        self.browser.find_element_by_xpath('//*[@id="loginForm"]/div[1]/div[2]/div/label/input').send_keys(self.password)
-        self.browser.find_element_by_xpath('//*[@id="loginForm"]/div/div[3]/button').click()
+            self.useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 OPR/74.0.3911.203"
+            self.options = Options()
+            self.options.add_experimental_option("prefs", {"intl.accept_languages" : "tr"})
+            # self.options.add_argument('--headless')
+            self.options.add_argument(f'user-agent={self.useragent}')
+            self.options.add_argument('--disable-gpu') 
+            self.browser = webdriver.Chrome(executable_path="C://Users/deniz/OneDrive/Desktop/python/chromedriver.exe", chrome_options=self.options)
 
-        time.sleep(2)
-        try : 
-            self.alert = self.browser.find_element_by_id("slfErrorAlert").text
-        except Exception : 
-            pass
+            self.url = "https://www.instagram.com"
+            self.browser.get(self.url)
+            time.sleep(2)
 
-        if self.alert == "Girdiğin kullanıcı adı bir hesaba ait değil. Lütfen kullanıcı adını kontrol et ve tekrar dene." or self.alert == "Üzgünüz, şifren yanlıştı. Lütfen şifreni dikkatlice kontrol et." : 
-            self.ui.label_4.setText("Wrong Username or Password")
-        else : 
-            time.sleep(1)
-            self.ui.label_4.setText("Login Successful")
-            self.islemyapiliyor = False
+            self.browser.find_element_by_id("loginForm").find_element_by_css_selector("input[name=username]").send_keys(self.username)
+            self.browser.find_element_by_id("loginForm").find_element_by_css_selector("input[name=password]").send_keys(self.password)
+            self.browser.find_element_by_css_selector("button[type=submit]").click()
+
+            time.sleep(2)
+            try : 
+                self.alert = self.browser.find_element_by_id("slfErrorAlert").text
+                if self.alert == "Girdiğin kullanıcı adı bir hesaba ait değil. Lütfen kullanıcı adını kontrol et ve tekrar dene." or self.alert == "Üzgünüz, şifren yanlıştı. Lütfen şifreni dikkatlice kontrol et." : 
+                    self.ui.label_4.setText("Wrong Username or Password")
+            except Exception :
+                time.sleep(1)
+                self.ui.label_4.setText("Login Successful")
+                self.islemyapiliyor = False
+                self.ui.label_5.setText("")
 
 def app():
     app = QtWidgets.QApplication(sys.argv)
