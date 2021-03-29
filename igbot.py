@@ -292,7 +292,7 @@ class Myapp(QtWidgets.QMainWindow):
             self.useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 OPR/74.0.3911.203"
             self.options = Options()
             self.options.add_experimental_option("prefs", {"intl.accept_languages" : "tr"})
-            # self.options.add_argument('--headless')
+            self.options.add_argument('--headless')
             self.options.add_argument(f'user-agent={self.useragent}')
             self.options.add_argument('--disable-gpu') 
             self.browser = webdriver.Chrome(executable_path="C://Users/deniz/OneDrive/Desktop/python/chromedriver.exe", chrome_options=self.options)
