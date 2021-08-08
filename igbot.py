@@ -74,8 +74,8 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Username : "))
         self.label_2.setText(_translate("MainWindow", "Password : "))
         self.checkBox.setText(_translate("MainWindow", "Visible Browser"))
-        self.Unfolloweveryone.setText(_translate("MainWindow", "Stop Following Everyone"))
-        self.pushButton_3.setText(_translate("MainWindow", "Stop Following Everyone if He is not following you"))
+        self.Unfolloweveryone.setText(_translate("MainWindow", "Unfollow Everyone"))
+        self.pushButton_3.setText(_translate("MainWindow", "Unfollow Everyone if He does not following you"))
         self.pushButton_2.setText(_translate("MainWindow", "Follow first 100 followers of this user"))
         self.pushButton_4.setText(_translate("MainWindow", "Make list of Followings"))
         self.pushButton_5.setText(_translate("MainWindow", "Make list of followers"))
@@ -187,6 +187,7 @@ class Myapp(QtWidgets.QMainWindow):
                         self.cifttaraflitakip = True
 
                 if not self.cifttaraflitakip : 
+                    print(self.b)
                     self.takipedilenlerinisimleri[self.a].find_element_by_css_selector("div button").click()
                     time.sleep(0.31)
                     self.browser.find_element_by_xpath('/html/body/div[6]/div/div/div/div[3]/button[1]').click()
@@ -296,38 +297,70 @@ class Myapp(QtWidgets.QMainWindow):
         else : 
             print("Please login first")
 
+    # def unfolloweveryone(self):
+    #         if self.girisyapildi and self.islemyapiliyor == False :  
+
+    #             self.islemyapiliyor = True
+    #             self.pagename = self.username
+    #             self.toplamcikarilanlar = 0 
+    #             self.browser.get("https://www.instagram.com/"+self.pagename+"/")
+    #             print("please wait")
+    #             while True : 
+    #                 self.takiptencikilanlar = 0 
+    #                 self.browser.get("https://www.instagram.com/"+self.pagename+"/")
+    #                 action = webdriver.ActionChains(self.browser)
+    #                 self.takipedilenler = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a/span').text
+
+    #                 self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a').click()
+
+    #                 time.sleep(4)
+    #                 self.newfollowers = self.browser.find_element_by_css_selector("div[role=dialog] ul").find_elements_by_css_selector("li")
+    #                 self.avaiblefollowings = self.browser.find_element_by_css_selector("div[role=dialog] ul").find_elements_by_css_selector("li")
+
+    #                 while True :
+    #                     for gereksiz in range(len(self.newfollowers)) :
+    #                         try : 
+    #                             self.avaiblefollowings[self.takiptencikilanlar].find_element_by_css_selector("div button").click()
+    #                             time.sleep(0.6)
+    #                             self.browser.find_element_by_xpath('/html/body/div[6]/div/div/div/div[3]/button[1]').click()
+    #                             time.sleep(0.55)
+    #                             self.takiptencikilanlar += 1
+    #                             self.toplamcikarilanlar += 1
+    #                             print(f"{self.toplamcikarilanlar} user unfollowed")
+    #                             waittime = random.randint(6,9)
+    #                             time.sleep(waittime)
+    #                         except Exception :
+    #                             break
+    #                     break
+    #         else :
+    #             print("Please Login First")
+
     def unfolloweveryone(self):
-            if self.girisyapildi and self.islemyapiliyor == False :  
+        if self.girisyapildi and self.islemyapiliyor == False :  
 
-                self.islemyapiliyor = True
-                self.pagename = self.username
-                while True : 
-                    self.browser.get("https://www.instagram.com/"+self.pagename+"/")
-                    print("please wait")
-                    action = webdriver.ActionChains(self.browser)
-                    self.takiptencikilanlar = 0 
-                    self.takipedilenler = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a/span').text
+            self.islemyapiliyor = True
+            self.pagename = self.username
+            while True : 
+                self.browser.get("https://www.instagram.com/"+self.pagename+"/")
+                print("please wait")
+                action = webdriver.ActionChains(self.browser)
+                self.takiptencikilanlar = 0 
+                self.takipedilenler = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a/span').text
 
-                    self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a').click()
+                self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a').click()
 
-                    time.sleep(4)
-                    self.newfollowers = self.browser.find_element_by_css_selector("div[role=dialog] ul").find_elements_by_css_selector("li")
-                    self.avaiblefollowings = self.browser.find_element_by_css_selector("div[role=dialog] ul").find_elements_by_css_selector("li")
+                time.sleep(4)
+                self.newfollowers = self.browser.find_element_by_css_selector("div[role=dialog] ul").find_elements_by_css_selector("li")
+                self.avaiblefollowings = self.browser.find_element_by_css_selector("div[role=dialog] ul").find_elements_by_css_selector("li")
 
-                    while True :
-                        for gereksiz in range(len(self.newfollowers)) :
-                            try : 
-                                self.avaiblefollowings[self.takiptencikilanlar].find_element_by_css_selector("div button").click()
-                                time.sleep(0.3)
-                                self.browser.find_element_by_xpath('/html/body/div[6]/div/div/div/div[3]/button[1]').click()
-                                time.sleep(0.25)
-                                self.takiptencikilanlar += 1
-                                print(f"{self.takiptencikilanlar} user unfollowed")
-                                waittime = random.randint(3,4)
-                                time.sleep(waittime)
-                            except Exception :
-                                break
+                for x in self.avaiblefollowings: 
+                    x.find_element_by_css_selector("div button").click()
+                    time.sleep(0.3)
+                    self.browser.find_element_by_xpath('/html/body/div[6]/div/div/div/div[3]/button[1]').click()
+                    a = random.randint(3, 5)
+                    time.sleep(a)
 
+                    
             else :
                 print("Please Login First")
                 
@@ -382,4 +415,5 @@ def app():
     win.show()
     sys.exit(app.exec_())
 
-app()
+if __name__ == "__main__" : 
+    app()
